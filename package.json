@@ -1,9 +1,9 @@
 {
   "name":           "uupaa.wmclock.js",
-  "version":        "0.0.0",
-  "description":    "Module template for Mobile Web Application.",
+  "version":        "0.0.1",
+  "description":    "Master Clock.",
   "url":            "https://github.com/uupaa/WMClock.js",
-  "keywords":       ["WebModule", "Unstable"],
+  "keywords":       ["timer", "clock", "vsync", "requestAnimationFrame", "WebModule", "uupaa", "Unstable"],
   "repository": {
     "type":         "git",
     "url":          "https://github.com/uupaa/WMClock.js.git"
@@ -27,16 +27,18 @@
     "lint":         "node node_modules/uupaa.plato.js; open lint/plato/index.html"
   },
   "x-build": {
-    "source":       ["lib/WMClock.js"],
+    "source":       ["lib/WMClock.js", "lib/WMClock.easing.js"],
     "output":       "release/WMClock.min.js",
     "target":       ["all"],
     "label":        ["@dev"],
     "module": {
       "develop":    ["uupaa.valid.js"],
-      "release":    []
+      "release":    ["uupaa.easing.js", "uupaa.wmtimer.js"]
     }
   },
   "dependencies": {
+    "uupaa.easing.js":  "",
+    "uupaa.wmtimer.js": ""
   },
   "devDependencies": {
     "uupaa.nodemodule.js": "",

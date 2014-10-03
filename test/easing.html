@@ -1,0 +1,51 @@
+<!DOCTYPE html><html><head><title>test</title>
+<meta name="viewport" content="width=device-width, user-scalable=no">
+<meta charset="utf-8"></head><body>
+
+<script src="../node_modules/uupaa.easing.js/lib/Easing.js"></script>
+<script src="../node_modules/uupaa.wmtimer.js/lib/WMTimer.js"></script>
+<script src="../lib/WMClock.js"></script>
+<script src="../lib/WMClock.easing.js"></script>
+
+<script>
+var ACTION_1 = {
+        //id    [ezfn,     v1,  v2,   t1,   t2
+        "p1_x": ["linear", 0,   400,  100, 550],
+        "p1_y": ["inquad", 0,   400,  100, 550],
+        "p1_a": ["inquad", 0.8, 0.2,  250, 600]
+    };
+var particle = {
+      "p1": _createParticleNode("p1", 0, 0, 100, 100, "rgba(0,0,0,1)")
+    };
+document.body.appendChild(particle["p1"]);
+
+new WMClock({ vsync: true }).easing(ACTION_1, function(time, delta, count, data) {
+//console.log(time, delta, count);
+    for (var id in data) { // id is "p1_x" | "p1_y" | "p1_a"
+        var ary = id.split("_");
+        var nid  = ary[0];
+        var prop = ary[1];
+
+        switch (prop) {
+        case "x": particle[nid].style.left = data[id] + "px"; break;
+        case "y": particle[nid].style.top  = data[id] + "px"; break;
+        case "a": particle[nid].style.backgroundColor = "rgba(0,0,0," + data[id] + ")";
+        }
+    }
+}, { tax: 5 }).run();
+
+function _createParticleNode(id, x, y, w, h, color) {
+    var node = document.createElement("div");
+    node.id = id;
+    node.style.cssText = "position:absolute;" +
+                         "left:"   + x + "px;" +
+                         "top:"    + y + "px;" +
+                         "width:"  + w + "px;" +
+                         "height:" + h + "px;" +
+                         "background-color:" + color;
+    return node;
+}
+
+</script>
+</body></html>
+

@@ -6,5 +6,6 @@ require("../node_modules/uupaa.valid.js/lib/Valid.js");
 require("../node_modules/uupaa.task.js/lib/Task.js");
 require("../node_modules/uupaa.test.js/lib/Test.js");
 require("../lib/WMClock.js");
+require("../lib/WMClock.easing.js");
 require("../release/WMClock.min.js");
 require("./test.js");
