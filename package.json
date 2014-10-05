@@ -27,18 +27,17 @@
     "lint":         "node node_modules/uupaa.plato.js; open lint/plato/index.html"
   },
   "x-build": {
-    "source":       ["lib/WMClock.js", "lib/WMClock.easing.js"],
+    "source":       ["lib/WMClock.js"],
     "output":       "release/WMClock.min.js",
     "target":       ["all"],
     "label":        ["@dev"],
     "module": {
       "develop":    ["uupaa.valid.js"],
-      "release":    ["uupaa.easing.js", "uupaa.wmtimer.js"]
+      "release":    ["uupaa.wmbasetime.js"]
     }
   },
   "dependencies": {
-    "uupaa.easing.js":  "",
-    "uupaa.wmtimer.js": ""
+    "uupaa.wmbasetime.js": ""
   },
   "devDependencies": {
     "uupaa.nodemodule.js": "",

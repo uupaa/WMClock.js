@@ -131,7 +131,7 @@ console.log([time, delta, count].join(","));
 function testClockOnce(test, pass, miss) {
     var clock = new WMClock({ speed: 1000 });
 
-    clock.once(function(time, delta, count) {
+    clock.nth(1, function(time, delta, count) {
         clock.stop();
         test.done(pass())
     });
@@ -142,7 +142,7 @@ function testClockOnce2(test, pass, miss) {
     var clock = new WMClock({ speed: 1000 });
     var count = 0;
 
-    clock.once(function(time, delta) {
+    clock.nth(2, function(time, delta) {
         ++count;
         if (count === 2) {
             clock.stop();
@@ -151,7 +151,7 @@ function testClockOnce2(test, pass, miss) {
             clock.stop();
             test.done(miss())
         }
-    }, 2);
+    });
     clock.run();
 }
 
