@@ -73,13 +73,16 @@ function testClockOptions(test, pass, miss) {
     clock.on(_userTick2);
     clock.run();
 
-    function _userTick1(time, delta, count) {
-        if (count > 10) {
+    var count1 = 0;
+    var count2 = 0;
+
+    function _userTick1(time, delta) {
+        if (++count1 > 10) {
             task.pass();
         }
     }
-    function _userTick2(time, delta, count) {
-        if (count > 10) {
+    function _userTick2(time, delta) {
+        if (++count2 > 10) {
             task.pass();
         }
     }
@@ -114,15 +117,18 @@ function testClockAndVSync(test, pass, miss) {
     clock.run();
     vsync.run();
 
-    function _clockTick(time, delta, count) {
+    var count1 = 0;
+    var count2 = 0;
+
+    function _clockTick(time, delta) {
 //console.log([time, delta, count].join(","));
-        if (count === 59) {
+        if (++count1 === 59) {
             task.set( "clock", time / 60 ).pass();
         }
     }
-    function _vsyncTick(time, delta, count) {
-console.log([time, delta, count].join(","));
-        if (count === 59) {
+    function _vsyncTick(time, delta) {
+//console.log([time, delta, count].join(","));
+        if (++count2 === 59) {
             task.set( "vsync", time / 60 ).pass();
         }
     }
@@ -140,10 +146,8 @@ function testClockOnce(test, pass, miss) {
 
 function testClockOnce2(test, pass, miss) {
     var clock = new WMClock({ speed: 1000 });
-    var count = 0;
 
-    clock.nth(2, function(time, delta) {
-        ++count;
+    clock.nth(2, function(time, delta, count) {
         if (count === 2) {
             clock.stop();
             test.done(pass())
@@ -205,13 +209,16 @@ function testVSyncOptions(test, pass, miss) {
     vsync.on(_userTick2);
     vsync.run();
 
-    function _userTick1(time, delta, count) {
-        if (count > 10) {
+    var count1 = 0;
+    var count2 = 0;
+
+    function _userTick1(time, delta) {
+        if (++count1 > 10) {
             task.pass();
         }
     }
-    function _userTick2(time, delta, count) {
-        if (count > 10) {
+    function _userTick2(time, delta) {
+        if (++count2 > 10) {
             task.pass();
         }
     }
