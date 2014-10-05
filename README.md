@@ -18,7 +18,14 @@ WMClock.js description.
 ```js
 <script src="lib/WMClock.js"></script>
 <script>
-console.log( WMClock() );
+var clock = new WMClock({ vsync: true }).on(_tick).run();
+
+function _tick(time, delta, count) {
+    console.log(time, delta, count);
+    if (count > 10) {
+        clock.off(_tick);
+    }
+}
 </script>
 ```
 
@@ -27,7 +34,7 @@ console.log( WMClock() );
 ```js
 importScripts("lib/WMClock.js");
 
-console.log( WMClock() );
+...
 ```
 
 ### Node.js
@@ -35,5 +42,5 @@ console.log( WMClock() );
 ```js
 var WMClock = require("lib/WMClock.js");
 
-console.log( WMClock() );
+...
 ```

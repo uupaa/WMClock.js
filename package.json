@@ -1,6 +1,6 @@
 {
   "name":           "uupaa.wmclock.js",
-  "version":        "0.0.1",
+  "version":        "0.0.2",
   "description":    "Master Clock.",
   "url":            "https://github.com/uupaa/WMClock.js",
   "keywords":       ["timer", "clock", "vsync", "requestAnimationFrame", "WebModule", "uupaa", "Unstable"],
