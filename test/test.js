@@ -71,7 +71,7 @@ function testClockOptions(test, pass, miss) {
 
     clock.on(_userTick1);
     clock.on(_userTick2);
-    clock.run();
+    clock.start();
 
     var count1 = 0;
     var count2 = 0;
@@ -114,8 +114,8 @@ function testClockAndVSync(test, pass, miss) {
     clock.on(_clockTick);
     vsync.on(_vsyncTick);
 
-    clock.run();
-    vsync.run();
+    clock.start();
+    vsync.start();
 
     var count1 = 0;
     var count2 = 0;
@@ -141,7 +141,7 @@ function testClockOnce(test, pass, miss) {
         clock.stop();
         test.done(pass())
     });
-    clock.run();
+    clock.start();
 }
 
 function testClockOnce2(test, pass, miss) {
@@ -156,7 +156,7 @@ function testClockOnce2(test, pass, miss) {
             test.done(miss())
         }
     });
-    clock.run();
+    clock.start();
 }
 
 function testVSyncOnOffResultValue(test, pass, miss) {
@@ -207,7 +207,7 @@ function testVSyncOptions(test, pass, miss) {
 
     vsync.on(_userTick1);
     vsync.on(_userTick2);
-    vsync.run();
+    vsync.start();
 
     var count1 = 0;
     var count2 = 0;
