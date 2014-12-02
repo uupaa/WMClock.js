@@ -12,10 +12,12 @@ onmessage = function(event) {
     importScripts(MESSAGE.BASE_DIR + "../node_modules/uupaa.valid.js/lib/Valid.js");
     importScripts(MESSAGE.BASE_DIR + "../node_modules/uupaa.task.js/lib/Task.js");
     importScripts(MESSAGE.BASE_DIR + "../node_modules/uupaa.test.js/lib/Test.js");
+    importScripts(MESSAGE.BASE_DIR + "../node_modules/uupaa.wmeasing.js/lib/WMEasing.js");
     importScripts(MESSAGE.BASE_DIR + "../node_modules/uupaa.wmbasetime.js/lib/WMBaseTime.js");
+    importScripts(MESSAGE.BASE_DIR + "../node_modules/uupaa.pagevisibilityevent.js/lib/PageVisibilityEvent.js");
     importScripts(MESSAGE.BASE_DIR + "../lib/WMClock.js");
     importScripts(MESSAGE.BASE_DIR + "../release/WMClock.min.js");
-    importScripts(MESSAGE.BASE_DIR + "./test.js?_=1412530248158");
+    importScripts(MESSAGE.BASE_DIR + "./test.js");
 
     self.postMessage({ error: self.errorMessage || "" });
 };
@@ -27,9 +29,11 @@ onmessage = function(event) {
 <script src="../node_modules/uupaa.valid.js/lib/Valid.js"></script>
 <script src="../node_modules/uupaa.task.js/lib/Task.js"></script>
 <script src="../node_modules/uupaa.test.js/lib/Test.js"></script>
+<script src="../node_modules/uupaa.wmeasing.js/lib/WMEasing.js"></script>
 <script src="../node_modules/uupaa.wmbasetime.js/lib/WMBaseTime.js"></script>
+<script src="../node_modules/uupaa.pagevisibilityevent.js/lib/PageVisibilityEvent.js"></script>
 <script src="../lib/WMClock.js"></script>
 <script src="../release/WMClock.min.js"></script>
-<script src="./test.js?=_1412530248159"></script>
+<script src="./test.js"></script>
 
 </body></html>
