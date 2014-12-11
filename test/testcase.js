@@ -56,7 +56,7 @@ function testClockOnOffResultValue(test, pass, miss) {
 }
 
 function testClockOptions(test, pass, miss) {
-    var task = new Task(2, function(err, buffer, task) {
+    var task = new TestTask(2, function(err, buffer, task) {
             clock.clear();
             clock.stop();
 
@@ -89,7 +89,7 @@ function testClockOptions(test, pass, miss) {
 }
 
 function testClockAndVSync(test, pass, miss) {
-    var task = new Task(2, function(err, buffer, task) { // buffer has { clock, vsync }
+    var task = new TestTask(2, function(err, buffer, task) { // buffer has { clock, vsync }
             clock.clear();
             vsync.clear();
 
@@ -192,7 +192,7 @@ function testVSyncOnOffResultValue(test, pass, miss) {
 }
 
 function testVSyncOptions(test, pass, miss) {
-    var task = new Task(2, function(err, buffer, task) {
+    var task = new TestTask(2, function(err, buffer, task) {
             vsync.clear();
             vsync.stop();
 
