@@ -1,5 +1,4 @@
 require("../node_modules/uupaa.wmeasing.js/lib/WMEasing.js");
-require("../node_modules/uupaa.wmbasetime.js/lib/WMBaseTime.js");
 require("../node_modules/uupaa.pagevisibilityevent.js/lib/PageVisibilityEvent.js");
 require("../../WebModule/lib/Reflection.js");
 require("../../WebModule/lib/Console.js");

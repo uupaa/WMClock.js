@@ -1,6 +1,6 @@
 {
   "name": "uupaa.wmclock.js",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Master Clock.",
   "url": "https://github.com/uupaa/WMClock.js",
   "keywords": [
@@ -48,7 +48,6 @@
     ]
   },
   "dependencies": {
-    "uupaa.wmbasetime.js": "",
     "uupaa.pagevisibilityevent.js": ""
   },
   "devDependencies": {

@@ -12,7 +12,6 @@ return new Test("WMClock", {
         button:     true,
         both:       true, // test the primary module and secondary module
     }).add([
-//      testClockTypeError,
         testClockOnOffResultValue,
         testClockOptions,
         testClockAndVSync,
@@ -21,14 +20,14 @@ return new Test("WMClock", {
         // --- VSync ---
         testVSyncOnOffResultValue,
         testVSyncOptions,
+        // --- options.pluse ---
+        testVSyncPulse,
     ]).run().clone();
 
 
 function testClockOnOffResultValue(test, pass, miss) {
 
-    var clock = new WMClock();
-
-    clock.on(_userTick1);
+    var clock = new WMClock([_userTick1]);
 
     var result2 = clock.has(_userTick1) === true; // true
 
@@ -67,11 +66,7 @@ function testClockOptions(test, pass, miss) {
             }
         });
 
-    var clock = new WMClock();
-
-    clock.on(_userTick1);
-    clock.on(_userTick2);
-    clock.start();
+    var clock = new WMClock([_userTick1, _userTick2], { start: true });
 
     var count1 = 0;
     var count2 = 0;
@@ -108,14 +103,8 @@ function testClockAndVSync(test, pass, miss) {
             }
         });
 
-    var clock = new WMClock();
-    var vsync = new WMClock({ vsync: true });
-
-    clock.on(_clockTick);
-    vsync.on(_vsyncTick);
-
-    clock.start();
-    vsync.start();
+    var clock = new WMClock([_clockTick], { start: true });
+    var vsync = new WMClock([_vsyncTick], { start: true, vsync: true });
 
     var count1 = 0;
     var count2 = 0;
@@ -135,19 +124,18 @@ function testClockAndVSync(test, pass, miss) {
 }
 
 function testClockOnce(test, pass, miss) {
-    var clock = new WMClock({ speed: 1000 });
+    var clock = new WMClock([], { start: true, speed: 1000 });
 
-    clock.nth(1, function(time, delta, count) {
+    clock.nth(function(time, delta, count) {
         clock.stop();
         test.done(pass())
     });
-    clock.start();
 }
 
 function testClockOnce2(test, pass, miss) {
-    var clock = new WMClock({ speed: 1000 });
+    var clock = new WMClock([], { start: true, speed: 1000 });
 
-    clock.nth(2, function(time, delta, count) {
+    clock.nth(function(time, delta, count) {
         if (count === 2) {
             clock.stop();
             test.done(pass())
@@ -155,16 +143,12 @@ function testClockOnce2(test, pass, miss) {
             clock.stop();
             test.done(miss())
         }
-    });
-    clock.start();
+    }, 2);
 }
 
 function testVSyncOnOffResultValue(test, pass, miss) {
 
-    var vsync = new WMClock({ vsync: true });
-
-
-    vsync.on(_userTick1);
+    var vsync = new WMClock([_userTick1], { vsync: true });
 
     var result2 = vsync.has(_userTick1) === true; // true
 
@@ -203,11 +187,7 @@ function testVSyncOptions(test, pass, miss) {
             }
         });
 
-    var vsync = new WMClock({ vsync: true });
-
-    vsync.on(_userTick1);
-    vsync.on(_userTick2);
-    vsync.start();
+    var vsync = new WMClock([_userTick1, _userTick2], { start: true, vsync: true });
 
     var count1 = 0;
     var count2 = 0;
@@ -223,5 +203,36 @@ function testVSyncOptions(test, pass, miss) {
         }
     }
 }
+
+function testVSyncPulse(test, pass, miss) {
+    var task = new TestTask(10, function(err, buffer, task) {
+            vsync.clear();
+            vsync.stop();
+
+            if (err) {
+                test.done(miss())
+            } else {
+                test.done(pass())
+            }
+        });
+
+    var vsync = new WMClock([], { vsync: false, speed: 100, pulse: 20, baseTime: 0 });
+
+    vsync.nth(_tick, 10);
+    vsync.start();
+
+    function _tick(timeStamp, deltaTime, callbackCount) {
+        console.log({ timeStamp:timeStamp, deltaTime:deltaTime, callbackCount:callbackCount});
+
+        if (timeStamp === (timeStamp | 0)) {
+            if (deltaTime === 0 || deltaTime === 20) {
+                task.pass();
+                return;
+            }
+        }
+        task.miss();
+    }
+}
+
 })((this || 0).self || global);
 
