@@ -20,8 +20,10 @@ return new Test("WMClock", {
         // --- VSync ---
         testVSyncOnOffResultValue,
         testVSyncOptions,
-        // --- options.pluse ---
         testVSyncPulse,
+        // ---
+        testClockSetBaseTime,
+        testClockSetBaseTime0,
     ]).run().clone();
 
 
@@ -68,16 +70,13 @@ function testClockOptions(test, pass, miss) {
 
     var clock = new WMClock([_userTick1, _userTick2], { start: true });
 
-    var count1 = 0;
-    var count2 = 0;
-
-    function _userTick1(time, delta) {
-        if (++count1 > 10) {
+    function _userTick1(timeStamp, deltaTime, count) {
+        if (count > 10) {
             task.pass();
         }
     }
-    function _userTick2(time, delta) {
-        if (++count2 > 10) {
+    function _userTick2(timeStamp, deltaTime, count) {
+        if (count > 10) {
             task.pass();
         }
     }
@@ -106,19 +105,14 @@ function testClockAndVSync(test, pass, miss) {
     var clock = new WMClock([_clockTick], { start: true });
     var vsync = new WMClock([_vsyncTick], { start: true, vsync: true });
 
-    var count1 = 0;
-    var count2 = 0;
-
-    function _clockTick(time, delta) {
-//console.log([time, delta, count].join(","));
-        if (++count1 === 59) {
-            task.set( "clock", time / 60 ).pass();
+    function _clockTick(timeStamp, deltaTime, count) {
+        if (count === 59) {
+            task.set( "clock", timeStamp / 60 ).pass();
         }
     }
-    function _vsyncTick(time, delta) {
-//console.log([time, delta, count].join(","));
-        if (++count2 === 59) {
-            task.set( "vsync", time / 60 ).pass();
+    function _vsyncTick(timeStamp, deltaTime, count) {
+        if (count === 59) {
+            task.set( "vsync", timeStamp / 60 ).pass();
         }
     }
 }
@@ -126,7 +120,7 @@ function testClockAndVSync(test, pass, miss) {
 function testClockOnce(test, pass, miss) {
     var clock = new WMClock([], { start: true, speed: 1000 });
 
-    clock.nth(function(time, delta, count) {
+    clock.nth(function(timeStamp, deltaTime, count) {
         clock.stop();
         test.done(pass())
     });
@@ -135,13 +129,15 @@ function testClockOnce(test, pass, miss) {
 function testClockOnce2(test, pass, miss) {
     var clock = new WMClock([], { start: true, speed: 1000 });
 
-    clock.nth(function(time, delta, count) {
-        if (count === 2) {
+    clock.nth(function(timeStamp, deltaTime, count) {
+        switch (count) {
+        case 1:
             clock.stop();
-            test.done(pass())
-        } else if (count >= 3) {
+            test.done(pass());
+            break;
+        case 2:
             clock.stop();
-            test.done(miss())
+            test.done(miss());
         }
     }, 2);
 }
@@ -189,16 +185,13 @@ function testVSyncOptions(test, pass, miss) {
 
     var vsync = new WMClock([_userTick1, _userTick2], { start: true, vsync: true });
 
-    var count1 = 0;
-    var count2 = 0;
-
-    function _userTick1(time, delta) {
-        if (++count1 > 10) {
+    function _userTick1(timeStamp, deltaTime, count) {
+        if (count > 10) {
             task.pass();
         }
     }
-    function _userTick2(time, delta) {
-        if (++count2 > 10) {
+    function _userTick2(timeStamp, deltaTime, count) {
+        if (count > 10) {
             task.pass();
         }
     }
@@ -206,8 +199,8 @@ function testVSyncOptions(test, pass, miss) {
 
 function testVSyncPulse(test, pass, miss) {
     var task = new TestTask(10, function(err, buffer, task) {
-            vsync.clear();
-            vsync.stop();
+            clock.clear();
+            clock.stop();
 
             if (err) {
                 test.done(miss())
@@ -216,23 +209,57 @@ function testVSyncPulse(test, pass, miss) {
             }
         });
 
-    var vsync = new WMClock([], { vsync: false, speed: 100, pulse: 20, baseTime: 0 });
+    var clock = new WMClock([], { vsync: false, speed: 100, pulse: 20, baseTime: 0 });
 
-    vsync.nth(_tick, 10);
-    vsync.start();
+    clock.nth(_tick, 10);
+    clock.start();
 
-    function _tick(timeStamp, deltaTime, callbackCount) {
-        console.log({ timeStamp:timeStamp, deltaTime:deltaTime, callbackCount:callbackCount});
+    function _tick(timeStamp, deltaTime, count) {
+        console.log({ timeStamp:timeStamp, deltaTime:deltaTime, count:count });
 
+        // deltaTime は初回が0で、それ以降は常に20になる(pulseが20なので)
+        // speedが100なので 100ms 毎に呼ばれるが、timeStampは20msずつ増える
         if (timeStamp === (timeStamp | 0)) {
-            if (deltaTime === 0 || deltaTime === 20) {
-                task.pass();
-                return;
+            if (timeStamp % 20 === 0) {
+                if (deltaTime === 0 || deltaTime === 20) {
+                    task.pass();
+                    return;
+                }
             }
         }
         task.miss();
     }
 }
+
+function testClockSetBaseTime(test, pass, miss) {
+    var now1 = Date.now();
+    var clock = new WMClock([], { vsync: false, baseTime: Date.now() });
+    var now2 = clock.now();
+
+    console.log("now: ", now1, now2);
+
+    if (now2 >= now1) {
+        if (now2 <= now1 + 10) {
+            test.done(pass())
+            return;
+        }
+    }
+    test.done(miss())
+}
+
+function testClockSetBaseTime0(test, pass, miss) {
+    var clock = new WMClock([], { vsync: false, baseTime: 0 });
+    var now = clock.now();
+
+    console.log("now: ", now);
+
+    if (now < 10) {
+        test.done(pass())
+        return;
+    }
+    test.done(miss())
+}
+
 
 })((this || 0).self || global);
 

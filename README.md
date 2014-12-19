@@ -18,12 +18,24 @@ WMClock.js description.
 ```js
 <script src="lib/WMClock.js"></script>
 <script>
-var clock = new WMClock({ vsync: true }).on(_tick).run();
+var clock = new WMClock([_tick], { vsync: true, start: true });
 
-function _tick(time, delta, count) {
-    console.log(time, delta, count);
-    if (count > 10) {
+function _tick(timeStamp, deltaTime, count) {
+    console.log("tick:", timeStamp, deltaTime, count);
+    if (count === 9) {
         clock.off(_tick);
+
+        clock.nth(function(timeStamp, deltaTime, count) {
+            console.log("nth:", timeStamp, deltaTime, count);
+            if (count === 9) {
+                clock.stop();
+                if (!clock.isActive()) {
+                    console.log("finished");
+                } else {
+                    console.log("error");
+                }
+            }
+        }, 10);
     }
 }
 </script>
