@@ -12,6 +12,8 @@ return new Test("WMClock", {
         button:     true,
         both:       true, // test the primary module and secondary module
     }).add([
+        //testClockBasic,
+        // ----
         testClockOnOffResultValue,
         testClockOptions,
         testClockAndVSync,
@@ -26,6 +28,126 @@ return new Test("WMClock", {
         testClockSetBaseTime0,
     ]).run().clone();
 
+function testClockBasic(test, pass, miss) {
+
+/*
+    var clock = new WMClock([tick], { start: true, vsync: false });
+
+    function tick(timeStamp, deltaTime, count) {
+        console.log({ timeStamp:timeStamp, deltaTime:deltaTime, count: count });
+    }
+    // setInterval(, 16.666) の間隔で tick をコールバックします。
+    // コールバックの間隔はCPUと負荷に依存します。
+    // アニメーション用途に使うことも可能ですがお勧めはしません。
+    // この例では (243 - 71) / 10 = 17.2 ms 間隔で駆動しています。
+    Object {timeStamp:  54, deltaTime:  0, count: 0}
+    Object {timeStamp:  71, deltaTime: 17, count: 1}
+    Object {timeStamp:  89, deltaTime: 18, count: 2}
+    Object {timeStamp: 106, deltaTime: 17, count: 3}
+    Object {timeStamp: 123, deltaTime: 17, count: 4}
+    Object {timeStamp: 139, deltaTime: 16, count: 5}
+    Object {timeStamp: 156, deltaTime: 17, count: 6}
+    Object {timeStamp: 173, deltaTime: 17, count: 7}
+    Object {timeStamp: 191, deltaTime: 18, count: 8}
+    Object {timeStamp: 208, deltaTime: 17, count: 9}
+    Object {timeStamp: 226, deltaTime: 18, count: 10}
+    Object {timeStamp: 243, deltaTime: 17, count: 11}
+ */
+/*
+    var clock = new WMClock([tick], { start: true, vsync: false, speed: 100 });
+
+    function tick(timeStamp, deltaTime, count) {
+        console.log({ timeStamp:timeStamp, deltaTime:deltaTime, count: count });
+    }
+    // setInterval(, 100) の間隔で tick をコールバックします。
+    // コールバックの間隔はCPUと負荷に依存します
+    // デバッグ用途に利用できます。
+    // この例では (1217 - 201) / 10 = 101.6 ms 間隔で駆動しており、1〜2msほど誤差がでています。
+    Object {timeStamp:  100, deltaTime:   0, count: 0}
+    Object {timeStamp:  201, deltaTime: 101, count: 1}
+    Object {timeStamp:  303, deltaTime: 102, count: 2}
+    Object {timeStamp:  404, deltaTime: 101, count: 3}
+    Object {timeStamp:  506, deltaTime: 102, count: 4}
+    Object {timeStamp:  607, deltaTime: 101, count: 5}
+    Object {timeStamp:  709, deltaTime: 102, count: 6}
+    Object {timeStamp:  811, deltaTime: 102, count: 7}
+    Object {timeStamp:  913, deltaTime: 102, count: 8}
+    Object {timeStamp: 1015, deltaTime: 102, count: 9}
+    Object {timeStamp: 1116, deltaTime: 101, count: 10}
+    Object {timeStamp: 1217, deltaTime: 101, count: 11}
+ */
+/*
+    var clock = new WMClock([tick], { start: true, vsync: false, pulse: 100 });
+
+    function tick(timeStamp, deltaTime, count) {
+        console.log({ timeStamp:timeStamp, deltaTime:deltaTime, count: count });
+    }
+    // setInterval(, 16.666) の間隔で tick をコールバックします。
+    // コールバックの間隔はCPUと負荷に依存します。
+    // timeStamp と deltaTime の値にはペースメイクされた理想的なクロックが供給されます。
+    // レンダリングのデバッグ用途に使用できます。
+    // この例では 平均 (1200 - 200) / 10 = 100.0 ms 間隔の値になります。誤差は出ていません。
+    Object {timeStamp:  100, deltaTime:   0, count: 0}
+    Object {timeStamp:  200, deltaTime: 100, count: 1}
+    Object {timeStamp:  300, deltaTime: 100, count: 2}
+    Object {timeStamp:  400, deltaTime: 100, count: 3}
+    Object {timeStamp:  500, deltaTime: 100, count: 4}
+    Object {timeStamp:  600, deltaTime: 100, count: 5}
+    Object {timeStamp:  700, deltaTime: 100, count: 6}
+    Object {timeStamp:  800, deltaTime: 100, count: 7}
+    Object {timeStamp:  900, deltaTime: 100, count: 8}
+    Object {timeStamp: 1000, deltaTime: 100, count: 9}
+    Object {timeStamp: 1100, deltaTime: 100, count: 10}
+    Object {timeStamp: 1200, deltaTime: 100, count: 11}
+ */
+/*
+    var clock = new WMClock([tick], { start: true, vsync: false, speed: 1000, pulse: 100 });
+
+    function tick(timeStamp, deltaTime, count) {
+        console.log({ timeStamp:timeStamp, deltaTime:deltaTime, count: count });
+    }
+    // setInterval(, 100) の間隔で tick をコールバックします。
+    // コールバックの間隔はCPUと負荷に依存します。
+    // timeStamp と deltaTime の値にはペースメイクされた理想的なクロックが供給されます。
+    // レンダリングのデバッグ用途に使用できます。
+    // この例では 平均 (1200 - 200) / 10 = 100.0 ms 間隔の値になります。誤差は出ていません。
+    Object {timeStamp:  100, deltaTime:   0, count: 0}
+    Object {timeStamp:  200, deltaTime: 100, count: 1}
+    Object {timeStamp:  300, deltaTime: 100, count: 2}
+    Object {timeStamp:  400, deltaTime: 100, count: 3}
+    Object {timeStamp:  500, deltaTime: 100, count: 4}
+    Object {timeStamp:  600, deltaTime: 100, count: 5}
+    Object {timeStamp:  700, deltaTime: 100, count: 6}
+    Object {timeStamp:  800, deltaTime: 100, count: 7}
+    Object {timeStamp:  900, deltaTime: 100, count: 8}
+    Object {timeStamp: 1000, deltaTime: 100, count: 9}
+    Object {timeStamp: 1100, deltaTime: 100, count: 10}
+    Object {timeStamp: 1200, deltaTime: 100, count: 11}
+ */
+/*
+    var clock = new WMClock([tick], { start: true, vsync: true });
+
+    function tick(timeStamp, deltaTime, count) {
+        console.log({ timeStamp:timeStamp, deltaTime:deltaTime, count: count });
+    }
+    // requestAnimationFrame の間隔で tick をコールバックします。
+    // コールバックの間隔はCPUと負荷に依存します。
+    // アニメーション用途に利用できます。
+    // この例では 平均 (425.74 - 242.91) / 10 = 18.283ms 間隔で駆動しています。
+    Object {timeStamp: 159.3509998638183, deltaTime:  0,                 count: 0}
+    Object {timeStamp: 242.9140000604093, deltaTime: 83.563000196591020, count: 1}
+    Object {timeStamp: 275.4189998377114, deltaTime: 32.504999777302146, count: 2}
+    Object {timeStamp: 292.0979999471456, deltaTime: 16.679000109434128, count: 3}
+    Object {timeStamp: 309.2350000515580, deltaTime: 17.137000104412436, count: 4}
+    Object {timeStamp: 326.4089999720454, deltaTime: 17.173999920487404, count: 5}
+    Object {timeStamp: 342.6089999265969, deltaTime: 16.199999954551460, count: 6}
+    Object {timeStamp: 359.1310000047087, deltaTime: 16.522000078111887, count: 7}
+    Object {timeStamp: 375.7909999694675, deltaTime: 16.659999964758754, count: 8}
+    Object {timeStamp: 392.8359998390078, deltaTime: 17.044999869540334, count: 9}
+    Object {timeStamp: 409.7090000286698, deltaTime: 16.873000189661980, count: 10}
+    Object {timeStamp: 425.7479999214411, deltaTime: 16.038999892771244, count: 11}
+ */
+}
 
 function testClockOnOffResultValue(test, pass, miss) {
 
